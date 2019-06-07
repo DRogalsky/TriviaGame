@@ -117,6 +117,16 @@ var game = {
 window.onload = function() {
     document.getElementById('startButton').onclick = game.quizStarter;
 
-    document.getElementsByClassName('questions').onclick = console.log('ive been clicked');
+    let className = document.getElementsByClassName('questions');
+    for(i = 0; i < className.length; i++) {
+        className[i].addEventListener('click', function(event) {
+            console.log('i was clicked!');
+            console.log(event);
+        })
+    }
+    // document.getElementsByClassName('questions').addEventListener('click', function(event) {
+    //     console.log('i was clicked!');
+    //     console.log(event);
+    // })
 
 }
