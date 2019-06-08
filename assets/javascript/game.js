@@ -1,7 +1,3 @@
-//TODO:when start button pressed bring up first question and start timer
-//TODO:make the questions appear on screen and then go away
-//TODO:when the question is answered bring up either a right or wrong screen for a sec then move one
-//TODO:after 10 questions give them a final score and put up a restart button
 
 var game = {
     questions: [
@@ -90,6 +86,13 @@ var game = {
     questionsAnswered: 0,
 
     questionsCorrect: 0,
+    
+    timer: 100,
+
+    timerCounter: function() {
+        this.timer--
+
+    },
 
     questionPrinter: function() {
         document.getElementById('question').textContent = this.questions[this.questionsAnswered].question;
@@ -101,7 +104,29 @@ var game = {
 
     quizStarter: function() {
         game.questionPrinter(); //look up bind later?
-        console.log('hello?')
+    },
+
+    quizFinish: function() {
+        document.getElementById('question').textContent = 'Quiz Finished!';
+        for (let i = 0; i < 4; i++) {
+            let grabber = i+1;
+            document.getElementById('question'+ grabber).textContent = "";
+        }
+        document.getElementById('question1').textContent = 'Correct: ' + game.questionsCorrect;
+        document.getElementById('question3').textContent = 'Time Left: ' + game.timer; + ' seconds'
+    },
+
+    quizChecker: function(answer) {
+        if (answer === game.questions[game.questionsAnswered].correct) { //put game here cause im unsure how it will interact with the this from the click event
+            game.questionsCorrect++
+            //TODO: timed messaged saying correct!
+        }
+        game.questionsAnswered++
+        if(game.questions[game.questionsAnswered] !== undefined) {
+            this.questionPrinter();
+        } else {
+            game.quizFinish();
+        }
     },
 
     restart: function(){
@@ -120,13 +145,8 @@ window.onload = function() {
     let className = document.getElementsByClassName('questions');
     for(i = 0; i < className.length; i++) {
         className[i].addEventListener('click', function(event) {
-            console.log('i was clicked!');
-            console.log(event);
+            let answer = event.path[0].childNodes[0].data;
+            game.quizChecker(answer);
         })
     }
-    // document.getElementsByClassName('questions').addEventListener('click', function(event) {
-    //     console.log('i was clicked!');
-    //     console.log(event);
-    // })
-
 }
