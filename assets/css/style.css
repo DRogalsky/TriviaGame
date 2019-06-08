@@ -1,3 +1,27 @@
-#hidden {
+body {
+    background-color: grey;
+}
+
+#triviaContainer{
+    position:absolute;
+    left:40%;
+    top:20%;
+    background-color: white;
+    padding: 20px;
+}
+
+h1, p, li, ul {
+    margin: 20px auto;
+}
+
+ul, li {
+    width: 100%;
+}
+
+#title {
+    font-size: 4em;
+}
+
+#restart {
     display: none;
 }

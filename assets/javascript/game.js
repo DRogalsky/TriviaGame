@@ -1,3 +1,5 @@
+let startButton = document.getElementById('startButton');
+let restartButton = document.getElementById('restart');
 
 var game = {
     questions: [
@@ -89,9 +91,11 @@ var game = {
     
     timer: 100,
 
-    timerCounter: function() {
-        this.timer--
+    timerHolder: "",
 
+    timerCounter: function() {
+        game.timer--
+        document.getElementById('timer').textContent = game.timer + ' seconds';
     },
 
     questionPrinter: function() {
@@ -104,22 +108,29 @@ var game = {
 
     quizStarter: function() {
         game.questionPrinter(); //look up bind later?
+        game.timerHolder = setInterval(game.timerCounter, 1000);
+        if (game.timer === 0) {
+            game.quizFinish();
+        }
+        startButton.style.display = 'none';
     },
 
     quizFinish: function() {
+        clearInterval(game.timerHolder)
         document.getElementById('question').textContent = 'Quiz Finished!';
         for (let i = 0; i < 4; i++) {
             let grabber = i+1;
             document.getElementById('question'+ grabber).textContent = "";
         }
         document.getElementById('question1').textContent = 'Correct: ' + game.questionsCorrect;
-        document.getElementById('question3').textContent = 'Time Left: ' + game.timer; + ' seconds'
+        document.getElementById('question3').textContent = 'Time Left: ' + game.timer; + ' seconds';
+        restartButton.style.display = 'inline-block';
+        
     },
 
     quizChecker: function(answer) {
         if (answer === game.questions[game.questionsAnswered].correct) { //put game here cause im unsure how it will interact with the this from the click event
             game.questionsCorrect++
-            //TODO: timed messaged saying correct!
         }
         game.questionsAnswered++
         if(game.questions[game.questionsAnswered] !== undefined) {
@@ -135,7 +146,12 @@ var game = {
             let grabber = i+1;
             document.getElementById('question'+ grabber).textContent = "";
         }
-
+        game.timer = 100;
+        game.questionsAnswered = 0;
+        game.questionsCorrect = 0;
+        startButton.style.display = 'inline-block';
+        restartButton.style.display = 'none';
+        document.getElementById('timer').textContent = "";
     }
 }
 
@@ -149,4 +165,6 @@ window.onload = function() {
             game.quizChecker(answer);
         })
     }
+
+    document.getElementById('restart').onclick = game.restart;
 }
